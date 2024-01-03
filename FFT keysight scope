@@ -1,0 +1,27 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+from matplotlib import pyplot
+import numpy as np
+import scipy.fftpack 
+
+filepath="C:\\temp\\id8_50Hz_40.0VPP_000104_AVER16.csv"
+df= pd.read_csv(filepath,skiprows=3)
+
+N=df['1'].size
+print(N)
+
+x=df['# time']
+T = x[1] - x[0]  #sample spacing
+
+y=np.array(df['2'])
+yf = scipy.fftpack.fft(y) 
+
+xf = np.linspace(0.0, 1.0/(2.0*T), int(N/2)) 
+fig,ax = plt.subplots() 
+bottom=10
+top=500
+ax.set_xlim([bottom, top])
+
+ax.plot(xf, 2.0/N * np.abs(yf[:N//2])) 
+
+plt.show()
